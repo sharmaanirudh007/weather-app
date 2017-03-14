@@ -1,0 +1,3 @@
+1. Open localhost:3000/front.html
+App will show the weather data of the specific location where user run this app.
+Customly can find the weather of any city in the world.

@@ -1,0 +1,68 @@
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="front.css">
+</head>
+<body>
+
+  <div id="content">
+<h1>Weather Data Using Geoloction API</h1>
+</div>
+<div id="input">
+<input id="city" type="text" placeholder="Enter city of your choice"><button id="custom">Get</button>
+</div>
+<div id="content-1">
+</div>
+  <script>
+$(document).ready(function(){
+  //$("#loc").on('click', function(){
+    //console.log("work");
+    navigator.geolocation.getCurrentPosition(function(position){
+      var lat = position.coords.latitude;
+      var long = position.coords.longitude;
+      var items = {latitude:lat, longitude:long};
+      console.log(lat);
+      $.ajax({
+    				type: "POST",
+    				url: "/weather",
+    				data: items,
+    				success: function(data){
+    	        //location.reload();
+    					//x.remove();
+              $("#content").append("<p>TEMPERATURE--"+ (data.data1.temp.temperature-32)*5/9 +"</p>");
+              $("#content").append("<p>HUMIDITY--"+ data.data1.temp.humidity +"</p>");
+              $("#content").append("<p>SUMMARY--"+ data.data1.temp.summary +"</p>");
+
+              $("#content").append("<p>CITY--"+ data.data2.city +"</p>");
+
+    							}
+                });
+    				});
+
+
+
+  $("#custom").on('click',function(){
+    var city = $("#city").val();
+    var item = {place:city};
+    $.ajax({
+          type: "POST",
+          url: "/weather-custom",
+          data: item,
+          success: function(data){
+            //location.reload();
+            //x.remove();
+            $("#content-1").append("<p>TEMPERATURE--"+ (data.temp.temperature-32)*5/9 +"</p>");
+            $("#content-1").append("<p>HUMIDITY--"+ data.temp.humidity +"</p>");
+            $("#content-1").append("<p>SUMMARY--"+ data.temp.summary +"</p>");
+
+                }
+          });
+    });
+  });
+
+
+
+</script>
+
+</body>
+</html>
